@@ -442,7 +442,8 @@ textarea.form-input{resize:vertical;min-height:60px}
   .form-row{grid-template-columns:1fr}
   .profit-inner{flex-direction:column;gap:12px;align-items:center}
   .profit-sep{display:none}
-  .auth-card{padding:28px 22px 24px;width:100%}
+  .auth-overlay{position:absolute;align-items:flex-start;padding-top:15vh;overflow-y:auto}
+  .auth-card{padding:28px 22px 24px;width:100%;max-width:100%}
   .auth-header h1{font-size:var(--fs-lg)}
   .profit-block-value{font-size:var(--fs-lg)}
   .chart-card{padding:12px}

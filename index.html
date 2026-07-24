@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>时序空间项目利润核算</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ── Login Overlay ── -->
+<div class="auth-overlay active" id="authOverlay">
+  <div class="auth-card">
+    <div class="auth-header">
+      <svg class="ico ico-brand"><use href="#ico-building"/></svg>
+      <h1>时序空间</h1>
+      <p>项目利润核算系统</p>
+    </div>
+    <form class="auth-form" id="authForm" onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label class="form-label">邮箱</label>
+        <input class="form-input" type="email" name="email" required placeholder="partner@example.com" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label class="form-label">密码</label>
+        <input class="form-input" type="password" name="password" required placeholder="输入密码" autocomplete="current-password">
+      </div>
+      <div class="auth-error" id="authError"></div>
+      <button class="btn btn-primary" type="submit" style="width:100%;justify-content:center;padding:10px" id="authBtn">登录</button>
+    </form>
+  </div>
+</div>
+
+<!-- SVG Icon Sprite -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="ico-building" viewBox="0 0 24 24"><path d="M3 21V9l9-7 9 7v12H3Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 21V13h6v8" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+  <symbol id="ico-folder" viewBox="0 0 24 24"><path d="M2 6a2 2 0 0 1 2-2h5l2 2h9a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+  <symbol id="ico-revenue" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><polyline points="8 13 12 9 16 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="12" y1="9" x2="12" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="ico-cost" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><polyline points="8 11 12 15 16 11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="12" y1="15" x2="12" y2="7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="ico-profit" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3" fill="none" stroke="currentColor" stroke-width="2" transform="rotate(45 12 12)"/><line x1="12" y1="8" x2="12" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="9" y1="12" x2="15" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="ico-projects" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/><rect x="14" y="3" width="7" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/><rect x="3" y="14" width="7" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/><rect x="14" y="14" width="7" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+  <symbol id="ico-gap" viewBox="0 0 24 24"><polyline points="17 3 21 3 21 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="7 21 3 21 3 17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="21" y1="3" x2="14" y2="10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="3" y1="21" x2="10" y2="14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="ico-overview" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><rect x="14" y="3" width="7" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><rect x="3" y="14" width="7" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><rect x="14" y="11" width="7" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+  <symbol id="ico-chart" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2a10 10 0 0 1 10 10h-10Z" fill="currentColor" opacity=".2"/><line x1="12" y1="2" x2="12" y2="12" stroke="currentColor" stroke-width="2"/><line x1="12" y1="12" x2="19" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="ico-export" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="7 10 12 15 17 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="12" y1="15" x2="12" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="ico-import" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="7 15 12 10 17 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="12" y1="10" x2="12" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="ico-empty-rev" viewBox="0 0 48 48"><circle cx="24" cy="24" r="22" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".25"/><circle cx="24" cy="24" r="10" fill="none" stroke="currentColor" stroke-width="1.8"/><polyline points="18 26 24 20 30 26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="ico-empty-cost" viewBox="0 0 48 48"><circle cx="24" cy="24" r="22" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".25"/><circle cx="24" cy="24" r="10" fill="none" stroke="currentColor" stroke-width="1.8"/><polyline points="18 20 24 26 30 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<div class="app">
+  <!-- Connection banner -->
+  <div class="storage-banner setup" id="storageBanner">
+    <span class="banner-text"><svg class="ico ico-sm"><use href="#ico-folder"/></svg> <strong>正在连接数据库……</strong></span>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-top">
+      <div class="brand">
+        <span class="brand-icon"><svg class="ico ico-brand"><use href="#ico-building"/></svg></span>
+        <div>
+          <h1>时序空间项目利润核算</h1>
+          <p>Supabase 云端存储 · 多设备共享数据</p>
+        </div>
+      </div>
+      <select class="project-select" id="projectSelect" onchange="selectProject(this.value)">
+        <option value=""><svg class="ico ico-sm"><use href="#ico-overview"/></svg> 全部项目概览</option>
+      </select>
+      <div class="header-actions">
+        <span class="user-badge" id="userBadge"></span>
+        <button class="btn btn-primary" onclick="openProjectModal()" data-admin>+ 新项目</button>
+        <button class="btn btn-soft" onclick="exportData()" data-admin><svg class="ico ico-btn"><use href="#ico-export"/></svg> 导出</button>
+        <button class="btn btn-soft" onclick="document.getElementById('importFile').click()" data-admin><svg class="ico ico-btn"><use href="#ico-import"/></svg> 导入</button>
+        <input type="file" id="importFile" accept=".json" hidden onchange="importData(event)">
+      </div>
+    </div>
+  </header>
+
+  <!-- Stats row -->
+  <div class="stats-row" id="statsRow"></div>
+
+  <!-- Project info bar -->
+  <div class="project-bar" id="projectBar" style="display:none"></div>
+
+  <!-- Two column: revenue + cost -->
+  <div class="two-col" id="twoCol">
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-header-left">
+          <svg class="ico ico-panel"><use href="#ico-revenue"/></svg>
+          <h3>收入明细</h3>
+        </div>
+        <button class="btn btn-add" id="btnAddRevenue" onclick="openItemModal('revenue')" data-admin>+ 添加</button>
+      </div>
+      <div class="panel-body">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>类别</th><th>描述</th><th>金额</th><th>已收款</th><th>未收</th><th>日期</th><th>备注</th><th></th></tr></thead>
+            <tbody id="revenueBody"></tbody>
+          </table>
+        </div>
+        <div class="empty-state" id="revenueEmpty">
+          <svg class="ico ico-empty"><use href="#ico-empty-rev"/></svg>
+          <h4>暂无收入记录</h4>
+          <p>选择一个项目后，点击「+ 添加」录入收入</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-header-left">
+          <svg class="ico ico-panel"><use href="#ico-cost"/></svg>
+          <h3>支出明细</h3>
+        </div>
+        <button class="btn btn-add" id="btnAddCost" onclick="openItemModal('cost')" data-admin>+ 添加</button>
+      </div>
+      <div class="panel-body">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>类别</th><th>描述</th><th>金额</th><th>已付款</th><th>未付</th><th>供应商</th><th>日期</th><th></th></tr></thead>
+            <tbody id="costBody"></tbody>
+          </table>
+        </div>
+        <div class="empty-state" id="costEmpty">
+          <svg class="ico ico-empty"><use href="#ico-empty-cost"/></svg>
+          <h4>暂无支出记录</h4>
+          <p>选择一个项目后，点击「+ 添加」录入支出</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profit summary -->
+  <div class="profit-section" id="profitSection">
+    <div class="profit-inner" id="profitInner"></div>
+  </div>
+
+  <!-- Charts -->
+  <div class="two-col">
+    <div class="chart-card">
+      <h3><svg class="ico ico-sm"><use href="#ico-chart"/></svg> 成本构成</h3>
+      <div class="chart-wrap"><canvas id="costPieChart"></canvas></div>
+      <div class="chart-legend" id="costPieLegend"></div>
+    </div>
+    <div class="chart-card">
+      <h3><svg class="ico ico-sm"><use href="#ico-chart"/></svg> 收入构成</h3>
+      <div class="chart-wrap"><canvas id="revenuePieChart"></canvas></div>
+      <div class="chart-legend" id="revenuePieLegend"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Project Modal -->
+<div class="modal-overlay" id="projectModalOverlay"><div class="modal">
+  <div class="modal-header"><h2 id="projectModalTitle">新建项目</h2><button class="modal-close" onclick="closeProjectModal()">✕</button></div>
+  <div class="modal-body">
+    <form id="projectForm" onsubmit="saveProject(event)">
+      <div class="form-row"><div class="form-group"><label class="form-label">项目名称 *</label><input class="form-input" type="text" name="name" required placeholder="如：阳光花园3栋502"></div><div class="form-group"><label class="form-label">合同金额 (元)</label><input class="form-input" type="number" name="contractAmount" step="0.01" min="0" placeholder="0.00"></div></div>
+      <div class="form-row"><div class="form-group"><label class="form-label">客户姓名 *</label><input class="form-input" type="text" name="clientName" required placeholder="甲方联系人"></div><div class="form-group"><label class="form-label">客户电话</label><input class="form-input" type="text" name="clientPhone" placeholder="手机号"></div></div>
+      <div class="form-group"><label class="form-label">装修地址</label><input class="form-input" type="text" name="address" placeholder="详细地址"></div>
+      <div class="form-row"><div class="form-group"><label class="form-label">项目状态</label><select class="form-input" name="status"><option value="报价中">报价中</option><option value="施工中">施工中</option><option value="已完工">已完工</option><option value="已结算">已结算</option></select></div></div>
+      <div class="form-row"><div class="form-group"><label class="form-label">开工日期</label><input class="form-input" type="date" name="startDate"></div><div class="form-group"><label class="form-label">预计竣工</label><input class="form-input" type="date" name="expectedEndDate"></div></div>
+      <div class="form-row"><div class="form-group"><label class="form-label">实际竣工</label><input class="form-input" type="date" name="actualEndDate"></div><div class="form-group"><label class="form-label">质保到期日</label><input class="form-input" type="date" name="warrantyExpiry"></div></div>
+      <div class="form-group"><label class="form-label">备注</label><textarea class="form-input" name="notes" rows="2" placeholder="项目备注……"></textarea></div>
+      <input type="hidden" name="id">
+    </form>
+  </div>
+  <div class="modal-footer"><button class="btn btn-soft" onclick="closeProjectModal()">取消</button><button class="btn btn-primary" onclick="document.getElementById('projectForm').requestSubmit()">保存</button></div>
+</div></div>
+
+<!-- Item Modal -->
+<div class="modal-overlay" id="itemModalOverlay"><div class="modal">
+  <div class="modal-header"><h2 id="itemModalTitle">添加收入</h2><button class="modal-close" onclick="closeItemModal()">✕</button></div>
+  <div class="modal-body">
+    <form id="itemForm" onsubmit="saveItem(event)">
+      <div class="form-row"><div class="form-group"><label class="form-label">类别</label><select class="form-input" name="category" id="itemCategory"></select></div><div class="form-group"><label class="form-label">金额 (元) *</label><input class="form-input" type="number" name="amount" step="0.01" min="0" required placeholder="0.00" oninput="calcItemPending()"></div></div>
+      <div class="form-group"><label class="form-label">描述</label><input class="form-input" type="text" name="description" placeholder="简要说明"></div>
+      <div class="form-row"><div class="form-group"><label class="form-label" id="itemRecLabel">已收款 (元)</label><input class="form-input" type="number" name="receivedOrPaid" step="0.01" min="0" placeholder="0.00" oninput="calcItemPending()"></div><div class="form-group"><label class="form-label" id="itemPendLabel">未收 (元)</label><input class="form-input" type="text" name="pendingDisplay" readonly class="input-readonly"></div></div>
+      <div class="form-group" id="itemSupplierRow" style="display:none"><label class="form-label">供应商</label><input class="form-input" type="text" name="supplier" placeholder="材料商或施工队"></div>
+      <div class="form-row"><div class="form-group"><label class="form-label">日期</label><input class="form-input" type="date" name="date"></div></div>
+      <div class="form-group"><label class="form-label">备注</label><textarea class="form-input" name="notes" rows="2" placeholder="备注……"></textarea></div>
+      <input type="hidden" name="id"><input type="hidden" name="itemType">
+    </form>
+  </div>
+  <div class="modal-footer"><button class="btn btn-soft" onclick="closeItemModal()">取消</button><button class="btn btn-primary" onclick="document.getElementById('itemForm').requestSubmit()">保存</button></div>
+</div></div>
+
+<!-- Project Detail Modal -->
+<div class="modal-overlay" id="projectDetailOverlay"><div class="modal">
+  <div class="modal-header"><h2>项目详情</h2><button class="modal-close" onclick="closeProjectDetail()">✕</button></div>
+  <div class="modal-body">
+    <div class="detail-grid">
+      <div class="detail-item"><span class="detail-label">客户姓名</span><span class="detail-value" id="detailClient"></span></div>
+      <div class="detail-item"><span class="detail-label">客户电话</span><span class="detail-value" id="detailPhone"></span></div>
+      <div class="detail-item"><span class="detail-label">装修地址</span><span class="detail-value" id="detailAddress"></span></div>
+      <div class="detail-item"><span class="detail-label">合同金额</span><span class="detail-value" id="detailContract"></span></div>
+      <div class="detail-item"><span class="detail-label">项目状态</span><span class="detail-value" id="detailStatus"></span></div>
+      <div class="detail-item"><span class="detail-label">开工日期</span><span class="detail-value" id="detailStart"></span></div>
+      <div class="detail-item"><span class="detail-label">预计竣工</span><span class="detail-value" id="detailEnd"></span></div>
+      <div class="detail-item"><span class="detail-label">实际竣工</span><span class="detail-value" id="detailActualEnd"></span></div>
+      <div class="detail-item"><span class="detail-label">质保到期</span><span class="detail-value" id="detailWarranty"></span></div>
+    </div>
+    <div class="detail-notes"><span class="detail-label">备注</span><p id="detailNotes"></p></div>
+  </div>
+  <div class="modal-footer"><button class="btn btn-soft" onclick="closeProjectDetail()">关闭</button></div>
+</div></div>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/app.js"></script>
+</body>
+</html>

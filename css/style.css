@@ -298,14 +298,14 @@ tbody tr:hover td{background:#f8fafc}
    ═══════════════════════════════════════════════════════════ */
 .chart-card{
   background:var(--surface);border:1px solid var(--b1);border-radius:var(--rx);
-  padding:20px 22px;box-shadow:var(--shadow-sm);
+  padding:20px 22px;box-shadow:var(--shadow-sm);text-align:center;
   transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s
 }
 .chart-card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
 .chart-card h3{font-size:var(--fs-md);font-weight:600;margin-bottom:14px}
-.chart-wrap{margin-bottom:8px;overflow:hidden}
-.chart-wrap canvas{display:block;max-width:100%}
-.chart-legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:var(--fs-xs)}
+.chart-wrap{margin-bottom:8px;overflow:hidden;display:flex;justify-content:center}
+.chart-wrap canvas{display:block;max-width:280px}
+.chart-legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:var(--fs-xs);justify-content:center}
 .chart-legend-item{display:flex;align-items:center;gap:6px;color:var(--ink2)}
 .chart-legend-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
 

@@ -417,30 +417,37 @@ textarea.form-input{resize:vertical;min-height:60px}
 /* Mobile: 2-col stats, full-width modals */
 @media (max-width: 600px) {
   :root{--fs-base:.92rem;--fs-md:1.02rem;--fs-lg:1.15rem;--fs-xl:1.5rem;--fs-2xl:2.2rem;--gap:14px;--gap-lg:22px}
-  .app{padding:10px 10px 40px}
-  .header{padding:14px 14px 10px;border-radius:var(--r)}
-  .brand-icon .ico{width:22px;height:22px}
-  .brand h1{font-size:var(--fs-lg)}
-  .header-top{flex-direction:column;gap:10px}
+  .app{padding:8px 8px 36px}
+  .header{padding:12px 12px 10px;border-radius:var(--r)}
+  .brand-icon .ico{width:20px;height:20px}
+  .brand h1{font-size:var(--fs-md)}
+  .brand p{display:none}
+  .header-top{flex-wrap:wrap;gap:8px}
   .header-actions{width:100%}
-  .header-actions .btn{flex:1;justify-content:center}
+  .header-actions .btn{flex:1;justify-content:center;font-size:var(--fs-xs)}
+  .user-badge{width:100%;margin-right:0;justify-content:center;order:-1}
+  .project-select{flex:1;min-width:0;font-size:var(--fs-xs)}
   .stats-row{grid-template-columns:1fr 1fr;gap:8px}
-  .stat-card{padding:14px 12px 12px}
+  .stat-card{padding:12px 10px 10px}
   .stat-card:nth-child(5){grid-column:span 2}
+  .stat-head{gap:6px;margin-bottom:4px}
   .stat-value{font-size:var(--fs-xl)}
-  .project-bar{flex-direction:column;align-items:flex-start;gap:8px;padding:12px 14px}
-  .pb-divider{display:none}.pb-item{padding:0}
+  .project-bar{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;padding:12px 14px}
+  .project-bar>div[style]{grid-column:span 2;justify-content:center;margin-left:0!important}
+  .pb-item{flex:auto;align-items:flex-start}
   .project-select{max-width:100%}
   .modal{max-width:100%;max-height:92vh;border-radius:var(--rx) var(--rx) 0 0;margin-top:auto}
   .modal-overlay{padding:0;align-items:flex-end}
   .form-row{grid-template-columns:1fr}
-  .profit-inner{gap:16px}
+  .profit-inner{flex-direction:column;gap:12px;align-items:center}
+  .profit-sep{display:none}
   .auth-card{padding:28px 22px 24px;width:100%}
   .auth-header h1{font-size:var(--fs-lg)}
   .profit-block-value{font-size:var(--fs-lg)}
-  .chart-card{padding:14px}
+  .chart-card{padding:12px}
   .table-wrap{font-size:var(--fs-xs)}
-  th,td{padding:6px 8px}
+  th,td{padding:5px 7px;font-size:.68rem}
+  .detail-grid{grid-template-columns:1fr}
 }
 
 /* Wide: let it breathe */

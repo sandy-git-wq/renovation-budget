@@ -277,6 +277,7 @@ function getCosts() { return currentProjectId ? costItems.filter(function(x) { r
 
 /* ── Render ── */
 function renderStats() {
+  if (currentProjectId) { document.getElementById('statsRow').innerHTML = ''; return; }
   var revs = getRevenues(), costs = getCosts();
   var tr = revs.reduce(function(s, x) { return s + (x.amount || 0); }, 0), tc = costs.reduce(function(s, x) { return s + (x.amount || 0); }, 0);
   var trec = revs.reduce(function(s, x) { return s + (x.receivedOrPaid || 0); }, 0), tpaid = costs.reduce(function(s, x) { return s + (x.receivedOrPaid || 0); }, 0);

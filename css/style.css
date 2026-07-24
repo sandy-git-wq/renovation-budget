@@ -435,6 +435,8 @@ textarea.form-input{resize:vertical;min-height:60px}
   .modal-overlay{padding:0;align-items:flex-end}
   .form-row{grid-template-columns:1fr}
   .profit-inner{gap:16px}
+  .auth-card{padding:28px 22px 24px;width:100%}
+  .auth-header h1{font-size:var(--fs-lg)}
   .profit-block-value{font-size:var(--fs-lg)}
   .chart-card{padding:14px}
   .table-wrap{font-size:var(--fs-xs)}

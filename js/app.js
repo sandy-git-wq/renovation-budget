@@ -376,13 +376,21 @@ function drawPie(canvasId, dataMap, colorMap) {
   var W = rect.width, H = 220; ctx.clearRect(0, 0, W, H);
   var entries = Object.entries(dataMap).filter(function(e) { return e[1] > 0; }), total = entries.reduce(function(s, e) { return s + e[1]; }, 0);
   if (!entries.length) { ctx.fillStyle = '#e5e0d8'; ctx.beginPath(); ctx.arc(W / 2, H / 2, Math.min(W, H) / 2 - 10, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#968c7e'; ctx.font = '13px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.fillText('暂无数据', W / 2, H / 2); return; }
+  /* Calculate fair percentages (largest-remainder, always sums to 100) */
+  var pcts = entries.map(function(e) { return (e[1] / total) * 100; });
+  var floors = pcts.map(function(v) { return Math.floor(v); });
+  var sum = floors.reduce(function(s, v) { return s + v; }, 0);
+  var remainders = pcts.map(function(v, i) { return { idx: i, rem: v - Math.floor(v) }; });
+  remainders.sort(function(a, b) { return b.rem - a.rem; });
+  for (var ri = 0; ri < 100 - sum; ri++) { floors[remainders[ri].idx]++; }
+
   var GAP = 2, cx = W / 2, cy = H / 2, r = Math.min(W, H) / 2 - 24, angle = -Math.PI / 2;
   entries.forEach(function(e, idx) {
     var val = e[1], slice = (val / total) * Math.PI * 2, color = colorMap[e[0]] || CHART_COLORS[idx % CHART_COLORS.length];
     ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, r, angle, angle + slice); ctx.closePath(); ctx.fillStyle = color; ctx.fill();
     if (idx > 0) { ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, r, angle, angle + GAP / r); ctx.closePath(); ctx.fillStyle = '#faf8f5'; ctx.fill(); }
-    var mid = angle + slice / 2, pct = ((val / total) * 100).toFixed(0);
-    if (Number(pct) > 5) { var lx = cx + Math.cos(mid) * (r * 0.65), ly = cy + Math.sin(mid) * (r * 0.65); ctx.fillStyle = (idx === 3 || idx === 2) ? '#1a1a1a' : '#ffffff'; ctx.font = 'bold 10px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(pct + '%', lx, ly); }
+    var pct = floors[idx];
+    if (pct > 5) { var mid = angle + slice / 2, lx = cx + Math.cos(mid) * (r * 0.65), ly = cy + Math.sin(mid) * (r * 0.65); ctx.fillStyle = (idx === 3 || idx === 2) ? '#1a1a1a' : '#ffffff'; ctx.font = 'bold 10px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(pct + '%', lx, ly); }
     angle += slice;
   });
   ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.strokeStyle = '#faf8f5'; ctx.lineWidth = GAP; ctx.stroke();
